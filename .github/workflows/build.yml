@@ -31,8 +31,7 @@ jobs:
       run: arm-linux-gnueabihf-gcc --version
     
     - name: Configure for Kirkwood
-      run: |
-       make dockstar_defconfig
+      run: make guruplug_defconfig
        
     - name: Build U-Boot
       run: make CROSS_COMPILE=arm-linux-gnueabihf- -j4
