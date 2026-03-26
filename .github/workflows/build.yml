@@ -31,7 +31,11 @@ jobs:
       run: arm-linux-gnueabihf-gcc --version
     
     - name: Configure for Kirkwood
-      run: make sheevaplug_defconfig
+      run: |
+       make sheevaplug_defconfig
+       # 禁用 JFFS2 以避免編譯錯誤
+       sed -i 's/^CONFIG_CMD_JFFS2=y/# CONFIG_CMD_JFFS2 is not set/' .config
+       sed -i 's/^CONFIG_JFFS2_SUMMARY=y/# CONFIG_JFFS2_SUMMARY is not set/' .config
     
     - name: Build U-Boot
       run: make CROSS_COMPILE=arm-linux-gnueabihf- -j4
