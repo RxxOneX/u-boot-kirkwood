@@ -45,7 +45,7 @@ jobs:
         file u-boot.kwb
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: u-boot-kirkwood-build
         path: |
