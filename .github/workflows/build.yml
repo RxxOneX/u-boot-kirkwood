@@ -34,7 +34,7 @@ jobs:
       run: make guruplug_defconfig
        
     - name: Build U-Boot
-      run: make CROSS_COMPILE=arm-linux-gnueabihf- -j4
+      run: make CROSS_COMPILE=arm-linux-gnueabihf- -j4 CONFIG_CMD_JFFS2= CONFIG_FS_JFFS2=
     
     - name: List generated files
       run: |
