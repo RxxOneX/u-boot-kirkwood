@@ -1,0 +1,56 @@
+name: Build U-Boot for Kirkwood
+
+on:
+  push:
+    branches: [ master, main, "2017.07-kirkwood-tld-1" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          git \
+          python3 \
+          bc \
+          bison \
+          flex \
+          libssl-dev \
+          device-tree-compiler \
+          gcc-arm-linux-gnueabihf
+    
+    - name: Show compiler version
+      run: arm-linux-gnueabihf-gcc --version
+    
+    - name: Configure for Kirkwood
+      run: make sheevaplug_defconfig
+    
+    - name: Build U-Boot
+      run: make CROSS_COMPILE=arm-linux-gnueabihf- -j4
+    
+    - name: List generated files
+      run: |
+        echo "=== Generated files ==="
+        ls -lh u-boot*
+        echo ""
+        echo "=== File types ==="
+        file u-boot.kwb
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: u-boot-kirkwood-build
+        path: |
+          u-boot.kwb
+          u-boot.bin
+          u-boot
+          tools/kwboot
+        retention-days: 30
